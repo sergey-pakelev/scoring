@@ -29,3 +29,11 @@ services:
     App\Service\ScoreCalculator\EmailDomainScoreCalculator:
         arguments:
             $emailDomainScoreConfig: '%email_domain_score_config%'
+
+    App\Service\ScoreCalculator\ConsentProcessingPersonalDataScoreCalculator:
+        arguments:
+            $consentProcessingPersonalDataScoreConfig: '%consent_processing_personal_data_score_config%'
+
+    App\Service\ScoreCalculator\PhoneNumberCarrierScoreCalculator:
+        arguments:
+            $phoneNumberCarrierScoreConfig: '%phone_number_carrier_score_config%'

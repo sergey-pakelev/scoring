@@ -20,8 +20,8 @@ class EmailDomainScoreConfig
         try {
             $config->setDefaultScore($emailDomainScoreConfig['default_score']);
 
-            foreach ($emailDomainScoreConfig['domain_scores'] as $domainScore) {
-                $domainScore = new DomainScore($domainScore['name'], $domainScore['score']);
+            foreach ($emailDomainScoreConfig['domain_scores'] as $domainScoreArray) {
+                $domainScore = new DomainScore($domainScoreArray['name'], $domainScoreArray['score']);
                 $config->addDomainScore($domainScore);
             }
         } catch (\Throwable $e) {
