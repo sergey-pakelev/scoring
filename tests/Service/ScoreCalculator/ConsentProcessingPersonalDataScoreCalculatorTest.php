@@ -3,11 +3,20 @@
 namespace App\Tests\Service\ScoreCalculator;
 
 use App\Entity\Client;
+use App\Exception\InvalidConsentProcessingPersonalDataScoreConfigException;
 use App\Service\ScoreCalculator\ConsentProcessingPersonalDataScoreCalculator;
 use PHPUnit\Framework\TestCase;
 
 class ConsentProcessingPersonalDataScoreCalculatorTest extends TestCase
 {
+    public function testInvalidConfigThrowException(): void
+    {
+        $config = [];
+
+        $this->expectException(InvalidConsentProcessingPersonalDataScoreConfigException::class);
+        new ConsentProcessingPersonalDataScoreCalculator($config);
+    }
+
     public function calculateProvider(): array
     {
         return [
@@ -19,9 +28,14 @@ class ConsentProcessingPersonalDataScoreCalculatorTest extends TestCase
     /**
      * @dataProvider calculateProvider
      */
-    public function testCalculate(Client $client, int $expectedScore)
+    public function testCalculate(Client $client, int $expectedScore): void
     {
-        $calculator = new ConsentProcessingPersonalDataScoreCalculator();
+        $config = [
+            'score_with_consent' => 4,
+            'score_without_consent' => 0,
+        ];
+
+        $calculator = new ConsentProcessingPersonalDataScoreCalculator($config);
 
         $score = $calculator->calculate($client);
 

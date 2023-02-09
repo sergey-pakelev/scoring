@@ -3,14 +3,22 @@
 namespace App\Service\ScoreCalculator;
 
 use App\Entity\Client;
+use App\Service\ScoreCalculator\Config\ConsentProcessingPersonalDataScoreConfig;
 
 class ConsentProcessingPersonalDataScoreCalculator implements ScoreCalculatorInterface
 {
-    private const HAS_CONSENT_SCORE = 4;
-    private const HAS_NOT_CONSENT_SCORE = 0;
+    private ConsentProcessingPersonalDataScoreConfig $config;
+
+    public function __construct(array $consentProcessingPersonalDataScoreConfig)
+    {
+        $this->config = ConsentProcessingPersonalDataScoreConfig::fromArray($consentProcessingPersonalDataScoreConfig);
+    }
 
     public function calculate(Client $client): int
     {
-        return $client->hasConsentProcessingPersonalData() ? self::HAS_CONSENT_SCORE : self::HAS_NOT_CONSENT_SCORE;
+        return $client->hasConsentProcessingPersonalData()
+            ? $this->config->getScoreWithConsent()
+            : $this->config->getScoreWithoutConsent()
+        ;
     }
 }

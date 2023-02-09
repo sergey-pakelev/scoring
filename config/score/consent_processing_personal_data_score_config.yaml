@@ -1,0 +1,4 @@
+parameters:
+    consent_processing_personal_data_score_config:
+        score_with_consent: 4
+        score_without_consent: 0
