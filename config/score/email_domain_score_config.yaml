@@ -1,0 +1,13 @@
+parameters:
+    email_domain_score_config:
+        default_score: 3
+        domain_scores:
+            -
+                name: gmail
+                score: 10
+            -
+                name: yandex
+                score: 8
+            -
+                name: mail
+                score: 6
