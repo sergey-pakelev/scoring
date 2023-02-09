@@ -80,7 +80,7 @@ class Client
         return $this;
     }
 
-    public function isConsentProcessingPersonalData(): bool
+    public function hasConsentProcessingPersonalData(): bool
     {
         return $this->consentProcessingPersonalData;
     }
