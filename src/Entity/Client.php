@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\EducationEnum;
 use App\Repository\ClientRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -30,6 +31,9 @@ class Client
 
     #[ORM\Column]
     private int $score;
+
+    #[ORM\Column(enumType: EducationEnum::class)]
+    private EducationEnum $education;
 
     public function getId(): int
     {
@@ -99,6 +103,17 @@ class Client
     public function setScore(int $score): self
     {
         $this->score = $score;
+        return $this;
+    }
+
+    public function getEducation(): EducationEnum
+    {
+        return $this->education;
+    }
+
+    public function setEducation(EducationEnum $education): self
+    {
+        $this->education = $education;
         return $this;
     }
 }
