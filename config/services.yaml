@@ -37,3 +37,7 @@ services:
     App\Service\ScoreCalculator\PhoneNumberCarrierScoreCalculator:
         arguments:
             $phoneNumberCarrierScoreConfig: '%phone_number_carrier_score_config%'
+
+    App\Service\ScoreCalculator\EducationScoreCalculator:
+        arguments:
+            $educationScoreConfig: '%education_score_config%'

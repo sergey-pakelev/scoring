@@ -1,0 +1,12 @@
+parameters:
+    education_score_config:
+        education_scores:
+            -
+                education: HIGHER
+                score: 15
+            -
+                education: SPECIAL
+                score: 10
+            -
+                education: SECONDARY
+                score: 5

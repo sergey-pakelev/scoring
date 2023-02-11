@@ -11,7 +11,7 @@ class EmailDomainScoreConfig
     /**
      * @var DomainScore[]
      */
-    private array $domainScores;
+    private array $domainScores = [];
 
     public static function fromArray(array $emailDomainScoreConfig): self
     {

@@ -11,7 +11,7 @@ class PhoneNumberCarrierScoreConfig
     /**
      * @var CarrierScore[]
      */
-    private array $carrierScores;
+    private array $carrierScores = [];
 
     public static function fromArray(array $phoneNumberCarrierScoreConfig): self
     {
