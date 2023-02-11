@@ -7,11 +7,10 @@ use App\Service\ScoreCalculator\Config\PhoneNumberCarrierScoreConfig;
 
 class PhoneNumberCarrierScoreCalculator implements ScoreCalculatorInterface
 {
-    private PhoneNumberCarrierScoreConfig $config;
+    private ?PhoneNumberCarrierScoreConfig $config = null;
 
-    public function __construct(array $phoneNumberCarrierScoreConfig)
+    public function __construct(private readonly array $phoneNumberCarrierScoreConfig)
     {
-        $this->config = PhoneNumberCarrierScoreConfig::fromArray($phoneNumberCarrierScoreConfig);
     }
 
     public function calculate(Client $client): int
@@ -28,12 +27,24 @@ class PhoneNumberCarrierScoreCalculator implements ScoreCalculatorInterface
 
     private function getScoreByCarrierCode(string $carrierCode): int
     {
-        foreach ($this->config->getCarrierScores() as $carrierScore) {
+        $config = $this->getConfig();
+
+        foreach ($config->getCarrierScores() as $carrierScore) {
             if (in_array($carrierCode, $carrierScore->getCodes())) {
                 return $carrierScore->getScore();
             }
         }
 
-        return $this->config->getDefaultScore();
+        return $config->getDefaultScore();
+    }
+
+    private function getConfig(): PhoneNumberCarrierScoreConfig
+    {
+        if (!$this->config) {
+            $config = PhoneNumberCarrierScoreConfig::fromArray($this->phoneNumberCarrierScoreConfig);
+            $this->config = $config;
+        }
+
+        return $this->config;
     }
 }

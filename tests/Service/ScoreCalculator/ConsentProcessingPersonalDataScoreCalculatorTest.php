@@ -13,8 +13,11 @@ class ConsentProcessingPersonalDataScoreCalculatorTest extends TestCase
     {
         $config = [];
 
+        $calculator = new ConsentProcessingPersonalDataScoreCalculator($config);
+        $client = (new Client())->setConsentProcessingPersonalData(true);
+
         $this->expectException(InvalidConsentProcessingPersonalDataScoreConfigException::class);
-        new ConsentProcessingPersonalDataScoreCalculator($config);
+        $calculator->calculate($client);
     }
 
     public function calculateProvider(): array
@@ -39,6 +42,6 @@ class ConsentProcessingPersonalDataScoreCalculatorTest extends TestCase
 
         $score = $calculator->calculate($client);
 
-        $this->assertEquals($score, $expectedScore);
+        $this->assertEquals($expectedScore, $score);
     }
 }

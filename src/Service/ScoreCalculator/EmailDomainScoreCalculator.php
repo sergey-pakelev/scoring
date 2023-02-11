@@ -7,11 +7,10 @@ use App\Service\ScoreCalculator\Config\EmailDomainScoreConfig;
 
 class EmailDomainScoreCalculator implements ScoreCalculatorInterface
 {
-    private EmailDomainScoreConfig $emailDomainScoreConfig;
+    private ?EmailDomainScoreConfig $config = null;
 
-    public function __construct(array $emailDomainScoreConfig)
+    public function __construct(private readonly array $emailDomainScoreConfig)
     {
-        $this->emailDomainScoreConfig = EmailDomainScoreConfig::fromArray($emailDomainScoreConfig);
     }
 
     public function calculate(Client $client): int
@@ -32,12 +31,24 @@ class EmailDomainScoreCalculator implements ScoreCalculatorInterface
 
     private function getScoreByDomain(string $domain): int
     {
-        foreach ($this->emailDomainScoreConfig->getDomainScores() as $domainScore) {
+        $config = $this->getConfig();
+
+        foreach ($config->getDomainScores() as $domainScore) {
             if (strtolower($domainScore->getName()) === strtolower($domain)) {
                 return $domainScore->getScore();
             }
         }
 
-        return $this->emailDomainScoreConfig->getDefaultScore();
+        return $config->getDefaultScore();
+    }
+
+    private function getConfig(): EmailDomainScoreConfig
+    {
+        if (!$this->config) {
+            $config = EmailDomainScoreConfig::fromArray($this->emailDomainScoreConfig);
+            $this->config = $config;
+        }
+
+        return $this->config;
     }
 }

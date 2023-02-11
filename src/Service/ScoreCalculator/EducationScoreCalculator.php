@@ -9,11 +9,10 @@ use App\Service\ScoreCalculator\Config\EducationScoreConfig;
 
 class EducationScoreCalculator implements ScoreCalculatorInterface
 {
-    private EducationScoreConfig $educationScoreConfig;
+    private ?EducationScoreConfig $config = null;
 
-    public function __construct(array $educationScoreConfig)
+    public function __construct(private readonly array $educationScoreConfig)
     {
-        $this->educationScoreConfig = EducationScoreConfig::fromArray($educationScoreConfig);
     }
 
     public function calculate(Client $client): int
@@ -24,12 +23,22 @@ class EducationScoreCalculator implements ScoreCalculatorInterface
 
     private function getScoreByEducation(EducationEnum $education): int
     {
-        foreach ($this->educationScoreConfig->getEducationScores() as $educationScore) {
+        foreach ($this->getConfig()->getEducationScores() as $educationScore) {
             if ($education === $educationScore->getEducation()) {
                 return $educationScore->getScore();
             }
         }
 
         throw new EducationScoreNotDefinedException("Score for education $education->name is not defined");
+    }
+
+    private function getConfig(): EducationScoreConfig
+    {
+        if (!$this->config) {
+            $config = EducationScoreConfig::fromArray($this->educationScoreConfig);
+            $this->config = $config;
+        }
+
+        return $this->config;
     }
 }

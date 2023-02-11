@@ -7,18 +7,29 @@ use App\Service\ScoreCalculator\Config\ConsentProcessingPersonalDataScoreConfig;
 
 class ConsentProcessingPersonalDataScoreCalculator implements ScoreCalculatorInterface
 {
-    private ConsentProcessingPersonalDataScoreConfig $config;
+    private ?ConsentProcessingPersonalDataScoreConfig $config = null;
 
-    public function __construct(array $consentProcessingPersonalDataScoreConfig)
+    public function __construct(private readonly array $consentProcessingPersonalDataScoreConfig)
     {
-        $this->config = ConsentProcessingPersonalDataScoreConfig::fromArray($consentProcessingPersonalDataScoreConfig);
     }
 
     public function calculate(Client $client): int
     {
+        $config = $this->getConfig();
+
         return $client->hasConsentProcessingPersonalData()
-            ? $this->config->getScoreWithConsent()
-            : $this->config->getScoreWithoutConsent()
+            ? $config->getScoreWithConsent()
+            : $config->getScoreWithoutConsent()
         ;
+    }
+
+    private function getConfig(): ConsentProcessingPersonalDataScoreConfig
+    {
+        if (!$this->config) {
+            $config = ConsentProcessingPersonalDataScoreConfig::fromArray($this->consentProcessingPersonalDataScoreConfig);
+            $this->config = $config;
+        }
+
+        return $this->config;
     }
 }

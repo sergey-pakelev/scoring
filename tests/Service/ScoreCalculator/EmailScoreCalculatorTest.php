@@ -13,8 +13,11 @@ class EmailScoreCalculatorTest extends TestCase
     {
         $invalidConfig = ['test' => 'test'];
 
+        $calculator = new EmailDomainScoreCalculator($invalidConfig);
+        $client = (new Client())->setEmail('test@test.com');
+
         $this->expectException(InvalidEmailDomainScoreConfigException::class);
-        new EmailDomainScoreCalculator($invalidConfig);
+        $calculator->calculate($client);
     }
 
     public function calculateProvider(): array

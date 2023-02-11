@@ -15,8 +15,11 @@ class EducationScoreCalculatorTest extends TestCase
     {
         $config = [];
 
+        $calculator = new EducationScoreCalculator($config);
+        $client = (new Client())->setEducation(EducationEnum::HIGHER);
+
         $this->expectException(InvalidEducationScoreConfigException::class);
-        new EducationScoreCalculator($config);
+        $calculator->calculate($client);
     }
 
     public function testNotDefinedEducationScoreThrowException(): void

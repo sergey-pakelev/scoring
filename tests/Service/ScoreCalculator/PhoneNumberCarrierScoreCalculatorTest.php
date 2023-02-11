@@ -13,8 +13,11 @@ class PhoneNumberCarrierScoreCalculatorTest extends TestCase
     {
         $config = [];
 
+        $calculator = new PhoneNumberCarrierScoreCalculator($config);
+        $client = (new Client())->setPhoneNumber('+71112324452');
+
         $this->expectException(InvalidPhoneNumberCarrierScoreConfig::class);
-        new PhoneNumberCarrierScoreCalculator($config);
+        $calculator->calculate($client);
     }
 
     public function calculateDataProvider(): array
@@ -45,6 +48,6 @@ class PhoneNumberCarrierScoreCalculatorTest extends TestCase
 
         $score = $calculator->calculate($client);
 
-        $this->assertEquals($score, $expectedScore);
+        $this->assertEquals($expectedScore, $score);
     }
 }
