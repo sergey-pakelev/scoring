@@ -46,4 +46,13 @@ class ClientRepository extends ServiceEntityRepository
 
         return $client;
     }
+
+    public function getAllClientsGenerator(): \Generator
+    {
+        $query = $this->createQueryBuilder('c')->getQuery();
+
+        foreach ($query->toIterable() as $client) {
+            yield $client;
+        }
+    }
 }

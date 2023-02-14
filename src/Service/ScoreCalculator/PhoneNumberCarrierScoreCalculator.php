@@ -13,6 +13,11 @@ class PhoneNumberCarrierScoreCalculator implements ScoreCalculatorInterface
     {
     }
 
+    public static function getName(): string
+    {
+        return 'Phone number carrier score';
+    }
+
     public function calculate(Client $client): int
     {
         $phoneNumber = $client->getPhoneNumber();

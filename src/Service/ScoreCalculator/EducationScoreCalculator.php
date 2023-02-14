@@ -15,6 +15,11 @@ class EducationScoreCalculator implements ScoreCalculatorInterface
     {
     }
 
+    public static function getName(): string
+    {
+        return 'Education score';
+    }
+
     public function calculate(Client $client): int
     {
         $education = $client->getEducation();

@@ -13,6 +13,11 @@ class ConsentProcessingPersonalDataScoreCalculator implements ScoreCalculatorInt
     {
     }
 
+    public static function getName(): string
+    {
+        return 'Consent processing personal data score';
+    }
+
     public function calculate(Client $client): int
     {
         $config = $this->getConfig();

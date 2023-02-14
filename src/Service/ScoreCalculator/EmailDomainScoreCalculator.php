@@ -13,6 +13,11 @@ class EmailDomainScoreCalculator implements ScoreCalculatorInterface
     {
     }
 
+    public static function getName(): string
+    {
+        return 'Email domain score';
+    }
+
     public function calculate(Client $client): int
     {
         $email = $client->getEmail();
