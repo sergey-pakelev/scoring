@@ -16,7 +16,27 @@ class ClientService
 
     public function create(ClientUpdateRequest $request): int
     {
-        $client = (new Client())
+        $client = new Client();
+        $this->mapRequestDataToClient($request, $client);
+
+        $score = $this->clientScoreService->calculateScore($client);
+        $client->setScore($score);
+
+        $this->clientRepository->saveAndFlush($client);
+
+        return $client->getId();
+    }
+
+    public function update(int $id, ClientUpdateRequest $request): void
+    {
+        $client = $this->clientRepository->findById($id);
+        $this->mapRequestDataToClient($request, $client);
+        $this->clientRepository->saveAndFlush($client);
+    }
+
+    private function mapRequestDataToClient(ClientUpdateRequest $request, Client $client): void
+    {
+        $client
             ->setFirstName($request->getFirstName())
             ->setLastName($request->getLastName())
             ->setPhoneNumber($request->getPhoneNumber())
@@ -24,12 +44,5 @@ class ClientService
             ->setEducation($request->getEducation())
             ->setConsentProcessingPersonalData($request->hasConsentProcessingPersonalData())
         ;
-
-        $score = $this->clientScoreService->calculateScore($client);
-        $client->setScore($score);
-
-        $this->clientRepository->save($client);
-
-        return $client->getId();
     }
 }

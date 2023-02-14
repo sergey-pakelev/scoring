@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Client;
+use App\Exception\ClientNotFoundException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -21,12 +22,28 @@ class ClientRepository extends ServiceEntityRepository
         parent::__construct($registry, Client::class);
     }
 
-    public function save(Client $entity, bool $flush = false): void
+    public function save(Client $client, bool $flush = false): void
     {
-        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->persist($client);
 
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function saveAndFlush(Client $client): void
+    {
+        $this->save($client, true);
+    }
+
+    public function findById(int $id): Client
+    {
+        $client = $this->find($id);
+
+        if (!$client) {
+            throw new ClientNotFoundException();
+        }
+
+        return $client;
     }
 }
