@@ -3,15 +3,29 @@
 namespace App\DTO;
 
 use App\Enum\EducationEnum;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class ClientUpdateRequest
 {
+    #[NotBlank]
+    #[Length(max: 256)]
     private ?string $firstName = null;
 
+    #[NotBlank]
+    #[Length(max: 256)]
     private ?string $lastName = null;
 
+    #[NotBlank]
+    #[Length(max: 256)]
+    #[Regex(pattern: '/^\+7[0-9]{10}$/', message: 'Invalid prone number format')]
     private ?string $phoneNumber = null;
 
+    #[NotBlank]
+    #[Email]
+    #[Length(max: 256)]
     private ?string $email = null;
 
     private bool $consentProcessingPersonalData = false;
