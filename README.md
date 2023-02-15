@@ -34,7 +34,7 @@ Run client score command for all clients
 make client-score
 ```
 
-Run client score command fro a specific client
+Run client score command for a specific client
 ```
 make client-score id=
 ```
