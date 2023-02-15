@@ -5,6 +5,7 @@
 
 ## Make targets
 * make dev - run dev server on http://localhost/8080
+* make stop - stop docker containers
 * make php-sh - enter to the app console
 * make run-tests - run app tests
 * make fixtures - create fixtures

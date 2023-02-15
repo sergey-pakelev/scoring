@@ -2,6 +2,8 @@ version: '3.8'
 
 services:
     php:
+        depends_on:
+            - db
         build:
             context: ./docker/php
         working_dir: /app
