@@ -4,10 +4,37 @@
 * GNU Make
 
 ## Make targets
-* make dev - run dev server on http://localhost/8080
-* make stop - stop docker containers
-* make php-sh - enter to the app console
-* make run-tests - run app tests
-* make fixtures - create fixtures
-* make client-score - run client score command for all clients
-* make client-score id= - run client score command fro a specific client
+Run dev server on http://localhost/8080
+```
+make dev
+```
+
+Stop docker containers
+```
+make stop
+```
+
+Enter to the app console
+```
+make php-sh
+```
+
+Run app tests
+```
+make run-tests
+```
+
+Create fixtures
+```
+make fixtures
+```
+
+Run client score command for all clients
+```
+make client-score
+```
+
+Run client score command fro a specific client
+```
+make client-score id=
+```
