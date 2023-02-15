@@ -4,7 +4,7 @@
 * GNU Make
 
 ## Make targets
-Run dev server on http://localhost/8080
+Run dev server on http://localhost:8080
 ```
 make dev
 ```
