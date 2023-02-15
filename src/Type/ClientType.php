@@ -2,7 +2,7 @@
 
 namespace App\Type;
 
-use App\DTO\ClientUpdateRequest;
+use App\DTO\ClientEditPayload;
 use App\Enum\EducationEnum;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -35,7 +35,7 @@ class ClientType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => ClientUpdateRequest::class,
+            'data_class' => ClientEditPayload::class,
         ]);
     }
 }

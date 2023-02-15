@@ -2,7 +2,9 @@
 
 namespace App\Tests\Service;
 
-use App\DTO\ClientUpdateRequest;
+use App\DTO\ClientDTO;
+use App\DTO\ClientsPage;
+use App\DTO\ClientEditPayload;
 use App\Entity\Client;
 use App\Enum\EducationEnum;
 use App\Repository\ClientRepository;
@@ -25,9 +27,76 @@ class ClientServiceTest extends TestCase
         $this->clientScoreService = $this->createMock(ClientScoreService::class);
     }
 
+    public function testGetClientsPageInvalidPage(): void
+    {
+        $this->clientRepository->expects($this->once())
+            ->method('count')
+            ->with([])
+            ->willReturn(0)
+        ;
+
+        $this->clientRepository->expects($this->once())
+            ->method('findPage')
+            ->with(0, 10)
+            ->willReturn([])
+        ;
+
+        $expectedClientsPage = (new ClientsPage())
+            ->setClients([])
+            ->setPages(0)
+            ->setPage(-1)
+        ;
+
+        $service = $this->createService();
+        $this->assertEquals($expectedClientsPage, $service->getClientsPage(-1));
+    }
+
+    /**
+     * @throws \ReflectionException
+     */
+    public function testGetClientsPage(): void
+    {
+        $this->clientRepository->expects($this->once())
+            ->method('count')
+            ->with([])
+            ->willReturn(1)
+        ;
+
+        $client = $this->createClient();
+        $clientScore = 20;
+        $client->setScore($clientScore);
+
+        $clientId = 11;
+        $this->setEntityId($client, $clientId);
+
+        $expectedOffset = 0;
+
+        $this->clientRepository->expects($this->once())
+            ->method('findPage')
+            ->with($expectedOffset, 10)
+            ->willReturn([$client])
+        ;
+
+        $expectedClientDTO = (new ClientDTO())
+            ->setId($clientId)
+            ->setFirstName($client->getFirstName())
+            ->setLastName($client->getLastName())
+            ->setScore($clientScore)
+        ;
+
+        $expectedClientsPage = (new ClientsPage())
+            ->setClients([$expectedClientDTO])
+            ->setPages(1)
+            ->setPage(1)
+        ;
+
+        $service = $this->createService();
+        $this->assertEquals($expectedClientsPage, $service->getClientsPage(1));
+    }
+
     public function testCreate()
     {
-        $request = $this->createUpdateRequest();
+        $payload = $this->createEditPayload();
         $expectedClient = $this->createClient();
 
         $expectedClientScore = 10;
@@ -49,7 +118,7 @@ class ClientServiceTest extends TestCase
             }))
         ;
 
-        $this->assertEquals($expectedClientId, $this->createService()->create($request));
+        $this->assertEquals($expectedClientId, $this->createService()->create($payload));
     }
 
     /**
@@ -76,14 +145,14 @@ class ClientServiceTest extends TestCase
             ->with($expectedClientToBeSaved)
         ;
 
-        $request = $this->createUpdateRequest();
+        $payload = $this->createEditPayload();
 
-        $this->createService()->update($clientId, $request);
+        $this->createService()->update($clientId, $payload);
     }
 
-    private function createUpdateRequest(): ClientUpdateRequest
+    private function createEditPayload(): ClientEditPayload
     {
-        return (new ClientUpdateRequest())
+        return (new ClientEditPayload())
             ->setEmail('test@test.com')
             ->setEducation(EducationEnum::HIGHER)
             ->setPhoneNumber('+71119993322')

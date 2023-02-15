@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    {% if pageData.clients|length or false %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">First name</th>
+                    <th scope="col">Last name</th>
+                    <th scope="col">Score</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for client in pageData.clients %}
+                <tr>
+                    <th><a href="#">{{ client.id }}</a></th>
+                    <td>{{ client.firstName }}</td>
+                    <td>{{ client.lastName }}</td>
+                    <td>{{ client.score }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        {% set pages = pageData.pages %}
+
+        {% if pages > 1 %}
+            {% set nearbyPagesLimit = 4 %}
+            {% set routeName = 'clients_list' %}
+            {% set currentPage = pageData.page > 0 ? pageData.page : 1 %}
+
+            <ul class="pagination justify-content-center">
+                {% for i in 1..pages %}
+                    {% if 0 == (currentPage - nearbyPagesLimit) - loop.index %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ path(routeName, {page: 1}) }}">1</a>
+                        </li>
+                        {% if 1 != loop.index %}
+                            <li class="page-item disabled">
+                                <a class="page-link" role="button">…</a>
+                            </li>
+                        {% endif %}
+                    {% elseif 0 == (currentPage + nearbyPagesLimit) - loop.index  and (currentPage + nearbyPagesLimit) < pages %}
+                        <li class="page-item disabled">
+                            <a class="page-link" role="button">…</a>
+                        </li>
+                    {% elseif 0 < (currentPage - nearbyPagesLimit) - loop.index %}
+                    {% elseif 0 > (currentPage + nearbyPagesLimit) - loop.index %}
+                    {% else %}
+                        <li class="page-item {{ currentPage == loop.index ? 'active' }}">
+                            <a class="page-link" href="{{ path(routeName, {page: loop.index}) }}">{{ loop.index }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                {% if currentPage != pages  and (currentPage + nearbyPagesLimit) < pages %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ path(routeName, {page: pages}) }}">{{ pages }}</a>
+                    </li>
+                {% endif %}
+            </ul>
+        {% endif %}
+    {% else %}
+        <div>
+            <span>No clients found</span>
+        </div>
+    {% endif %}
+{% endblock %}

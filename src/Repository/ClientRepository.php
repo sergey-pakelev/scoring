@@ -55,4 +55,19 @@ class ClientRepository extends ServiceEntityRepository
             yield $client;
         }
     }
+
+    /**
+     * @param int $offset
+     * @param int $limit
+     * @return Client[]
+     */
+    public function findPage(int $offset, int $limit): array
+    {
+        return $this->createQueryBuilder('c')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

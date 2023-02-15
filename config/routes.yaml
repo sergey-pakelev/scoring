@@ -1,3 +1,7 @@
-client_create:
+clients_list:
+    path: /
+    controller: App\Controller\ClientController::list
+
+clients_create:
     path: /clients/create
     controller: App\Controller\ClientController::create

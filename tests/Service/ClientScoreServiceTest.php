@@ -24,6 +24,11 @@ class ClientScoreServiceTest extends TestCase
                 {
                     return $this->calculatorScore;
                 }
+
+                public static function getName(): string
+                {
+                    return 'test';
+                }
             };
         }
 
