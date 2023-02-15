@@ -7,6 +7,8 @@ imports:
     - {resource: 'score/'}
 
 parameters:
+    exceptions:
+        App\Exception\ClientNotFoundException: {code: 404}
 
 services:
     # default configuration for services in *this* file
@@ -41,3 +43,11 @@ services:
     App\Service\ScoreCalculator\EducationScoreCalculator:
         arguments:
             $educationScoreConfig: '%education_score_config%'
+
+    App\Service\ExceptionConfigResolver:
+        arguments:
+            $configs: '%exceptions%'
+
+    App\Listener\ConfiguredExceptionListener:
+        tags:
+            - {name: kernel.event_listener, event: kernel.exception}
