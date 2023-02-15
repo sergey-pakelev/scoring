@@ -51,6 +51,22 @@ class ClientServiceTest extends TestCase
         $this->assertEquals($expectedClientsPage, $service->getClientsPage(-1));
     }
 
+    public function testGetClientEditPayloadById(): void
+    {
+        $client = $this->createClient();
+        $clientId = 11;
+
+        $this->clientRepository->expects($this->once())
+            ->method('findById')
+            ->with($clientId)
+            ->willReturn($client)
+        ;
+
+        $expectedPayload = $this->createEditPayload();
+
+        $this->assertEquals($expectedPayload, $this->createService()->getClientEditPayloadById($clientId));
+    }
+
     /**
      * @throws \ReflectionException
      */

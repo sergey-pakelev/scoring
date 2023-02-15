@@ -14,7 +14,7 @@
             <tbody>
             {% for client in pageData.clients %}
                 <tr>
-                    <th><a href="#">{{ client.id }}</a></th>
+                    <th><a href="{{ path('clients_edit', {id: client.id}) }}">{{ client.id }}</a></th>
                     <td>{{ client.firstName }}</td>
                     <td>{{ client.lastName }}</td>
                     <td>{{ client.score }}</td>

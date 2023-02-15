@@ -5,3 +5,9 @@ clients_list:
 clients_create:
     path: /clients/create
     controller: App\Controller\ClientController::create
+
+clients_edit:
+    path: /clients/{id}/edit
+    controller: App\Controller\ClientController::edit
+    requirements:
+        id: '\d+'

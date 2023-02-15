@@ -2,8 +2,8 @@
 
 namespace App\Service;
 
-use App\DTO\ClientsPage;
 use App\DTO\ClientEditPayload;
+use App\DTO\ClientsPage;
 use App\Entity\Client;
 use App\Mapper\ClientMapper;
 use App\Repository\ClientRepository;
@@ -39,10 +39,17 @@ class ClientService
         ;
     }
 
+    public function getClientEditPayloadById(int $id): ClientEditPayload
+    {
+        $client = $this->clientRepository->findById($id);
+
+        return ClientMapper::entityToPayload($client);
+    }
+
     public function create(ClientEditPayload $payload): int
     {
         $client = new Client();
-        $this->mapPayloadToClient($payload, $client);
+        ClientMapper::payloadToEntity($payload, $client);
 
         $score = $this->clientScoreService->calculateScore($client);
         $client->setScore($score);
@@ -55,19 +62,7 @@ class ClientService
     public function update(int $id, ClientEditPayload $payload): void
     {
         $client = $this->clientRepository->findById($id);
-        $this->mapPayloadToClient($payload, $client);
+        ClientMapper::payloadToEntity($payload, $client);
         $this->clientRepository->saveAndFlush($client);
-    }
-
-    private function mapPayloadToClient(ClientEditPayload $payload, Client $client): void
-    {
-        $client
-            ->setFirstName($payload->getFirstName())
-            ->setLastName($payload->getLastName())
-            ->setPhoneNumber($payload->getPhoneNumber())
-            ->setEmail($payload->getEmail())
-            ->setEducation($payload->getEducation())
-            ->setConsentProcessingPersonalData($payload->hasConsentProcessingPersonalData())
-        ;
     }
 }

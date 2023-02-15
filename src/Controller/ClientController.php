@@ -37,6 +37,26 @@ class ClientController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $clientService->create($clientEditPayload);
+            return $this->redirectToRoute('clients_list');
+        }
+
+        return $this->render('client/edit.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    public function edit(
+        Request $request,
+        ClientService $clientService,
+        int $id,
+    ): Response {
+        $clientEditPayload = $clientService->getClientEditPayloadById($id);
+        $form = $this->createForm(ClientType::class, $clientEditPayload);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $clientService->update($id, $clientEditPayload);
+            return $this->redirectToRoute('clients_list');
         }
 
         return $this->render('client/edit.html.twig', [

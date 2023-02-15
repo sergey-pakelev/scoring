@@ -28,6 +28,7 @@ class ClientType extends AbstractType
             ])
             ->add('consentProcessingPersonalData', CheckboxType::class, [
                 'label' => 'I consent to the processing of my personal data',
+                'required' => false,
             ])
         ;
     }
